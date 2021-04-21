@@ -1,10 +1,16 @@
 package tw.edu.pu.csim.tcyang.callandlocation
 
 import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -54,4 +60,30 @@ class MainActivity : AppCompatActivity(), MultiplePermissionsListener {
     override fun onPermissionRationaleShouldBeShown(p0: MutableList<PermissionRequest>?, p1: PermissionToken?) {
         p1?.continuePermissionRequest()
     }
+
+    fun ClickBtn(view : View) {
+        when (view.id){
+            R.id.callButton -> {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    val calleIntent: Intent = Intent(Intent.ACTION_CALL)
+                    val u: Uri = Uri.parse("tel:0426328001")
+                    calleIntent.setData(u)
+                    startActivity(calleIntent)
+                }
+            }
+
+            R.id.locationButton -> {
+            }
+
+            R.id.settingButton -> {
+                var it:Intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                var uri:Uri = Uri.fromParts("package", getPackageName(), null)
+                it.setData(uri)
+                startActivity(it)
+            }
+        }
+    }
+
+
 }
